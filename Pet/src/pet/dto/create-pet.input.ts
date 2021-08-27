@@ -13,4 +13,7 @@ export class CreatePetInput {
 
   @Field()
   age: number;
+
+  @Field()
+  ownerId: string;
 }

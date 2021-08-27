@@ -39,4 +39,7 @@ export class PetService {
       return get;
     }
   }
+  async findOwner(id: any) {
+    return await this.petRepository.find({ ownerId: id });
+  }
 }

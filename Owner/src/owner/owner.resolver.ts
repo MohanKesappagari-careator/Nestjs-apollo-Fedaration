@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { OwnerService } from './owner.service';
 import { Owner } from './entities/owner.entity';
 import { CreateOwnerInput } from './dto/create-owner.input';
@@ -31,5 +38,9 @@ export class OwnerResolver {
   @Mutation(() => Owner)
   removeOwner(@Args('id') id: string) {
     return this.ownerService.remove(id);
+  }
+  @ResolveReference()
+  resolvereferance(ref: { __typename: string; id: string }) {
+    return this.ownerService.findOne(ref.id);
   }
 }

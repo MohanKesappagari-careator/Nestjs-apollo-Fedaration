@@ -18,6 +18,13 @@ type Pet {
   type: String!
   age: Int!
   color: String!
+  owner: Owner!
+  ownerId: String!
+}
+
+type Owner {
+  id: ID!
+  pets: [Pet!]!
 }
 
 type Query {
@@ -36,6 +43,7 @@ input CreatePetInput {
   type: String!
   color: String!
   age: Float!
+  ownerId: String!
 }
 
 input UpdatePetInput {
@@ -43,5 +51,6 @@ input UpdatePetInput {
   type: String
   color: String
   age: Float
+  ownerId: String
   id: String!
 }
