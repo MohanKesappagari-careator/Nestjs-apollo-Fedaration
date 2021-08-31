@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "javascript",
-  "database": "petshop",
+  "database": "user",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true,
   "autoLoadEntities": true,
