@@ -9,6 +9,7 @@ import { jwtSecret } from './constants';
 import { JwtAuthGuard } from './guards/jwt-auh.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LocalStrategy } from './strategies/local.strategy';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       signOptions: { expiresIn: '3600s' },
     }),
   ],
-
+  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, AuthResolver],
 })
 export class AuthModule {}
