@@ -46,6 +46,8 @@ export class PetResolver {
   resolveReference(reference: { __typename: string; id: string }) {
     return this.petService.findOne(reference.id);
   }
+
+  
   @ResolveField((of) => Owner)
   owner(@Parent() pet: Pet) {
     return { __typename: 'Owner', id: pet.ownerId };
