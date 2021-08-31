@@ -1,6 +1,6 @@
 # Nestjs-apollo-Fedaration
-# Nestjs
-# Apollo-Fedaration
-# Graphql
-# Postgres
-# typeorm
+ Nestjs
+ Apollo-Fedaration
+ Graphql
+ Postgres
+ typeorm
