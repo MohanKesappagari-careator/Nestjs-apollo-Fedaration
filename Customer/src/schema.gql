@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type Customer {
+  _id: String!
+  name: String!
+  city: String!
+}
+
+type Query {
+  Allcustomer: [Customer!]!
+  customer(id: String!): Customer!
+}
+
+type Mutation {
+  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
+  updateCustomer(updateCustomerInput: UpdateCustomerInput!): Customer!
+  removeCustomer(_id: String!): Customer!
+}
+
+input CreateCustomerInput {
+  name: String!
+  city: String!
+}
+
+input UpdateCustomerInput {
+  name: String
+  city: String
+  _id: String!
+}

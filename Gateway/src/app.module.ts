@@ -34,6 +34,7 @@ class BuildServiceModule {}
             { name: 'owner', url: 'http://localhost:5000/graphql' },
             { name: 'user', url: 'http://localhost:5001/graphql' },
             { name: 'pet', url: 'http://localhost:5002/graphql' },
+            { name: 'customer', url: 'http://localhost:5003/graphql' },
           ],
         },
         subscriptions: false,
