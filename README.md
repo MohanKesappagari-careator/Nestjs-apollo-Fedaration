@@ -3,4 +3,7 @@
  Apollo-Fedaration,
  Graphql,
  Postgres,
- typeorm
+ Typeorm,
+ Mysql,
+ MongoDB,
+ Moongose
