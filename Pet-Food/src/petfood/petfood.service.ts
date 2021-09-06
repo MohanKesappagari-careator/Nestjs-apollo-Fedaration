@@ -10,8 +10,9 @@ export class PetfoodService {
   constructor(
     @InjectRepository(Petfood) private petRepo: Repository<Petfood>,
   ) {}
-  create(createPetfoodInput: CreatePetfoodInput) {
-    return 'This action adds a new petfood';
+  async create(createPetfoodInput: CreatePetfoodInput) {
+    const f = await this.petRepo.create(createPetfoodInput);
+    return this.petRepo.save(f);
   }
 
   findAll() {
