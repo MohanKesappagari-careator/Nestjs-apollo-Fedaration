@@ -1,0 +1,13 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Petfood {
+  id: ID!
+  name: String!
+  amount: Int!
+}
+
+type Query {
+  petfoodAll: [Petfood!]!
+}

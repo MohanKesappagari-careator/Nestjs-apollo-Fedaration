@@ -1,0 +1,350 @@
+"""The root query type which gives access points into the data universe."""
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """Fetches an object given its globally unique `ID`."""
+  node(
+    """The globally unique `ID`."""
+    nodeId: ID!
+  ): Node
+
+  """Reads and enables pagination through a set of `Petfood`."""
+  allPetfoods(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Petfood`."""
+    orderBy: [PetfoodsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PetfoodCondition
+  ): PetfoodsConnection
+  petfoodById(id: UUID!): Petfood
+
+  """Reads a single `Petfood` using its globally unique `ID`."""
+  petfood(
+    """The globally unique `ID` to be used in selecting a single `Petfood`."""
+    nodeId: ID!
+  ): Petfood
+}
+
+"""An object with a globally unique `ID`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""A connection to a list of `Petfood` values."""
+type PetfoodsConnection {
+  """A list of `Petfood` objects."""
+  nodes: [Petfood]!
+
+  """
+  A list of edges which contains the `Petfood` and cursor to aid in pagination.
+  """
+  edges: [PetfoodsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Petfood` you could get from the connection."""
+  totalCount: Int!
+}
+
+type Petfood implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  name: String!
+  amount: Int!
+}
+
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+"""A `Petfood` edge in the connection."""
+type PetfoodsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Petfood` at the end of the edge."""
+  node: Petfood
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""Methods to use when ordering `Petfood`."""
+enum PetfoodsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Petfood` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input PetfoodCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `amount` field."""
+  amount: Int
+}
+
+"""
+The root mutation type which contains root level fields which mutate data.
+"""
+type Mutation {
+  """Creates a single `Petfood`."""
+  createPetfood(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreatePetfoodInput!
+  ): CreatePetfoodPayload
+
+  """Updates a single `Petfood` using its globally unique id and a patch."""
+  updatePetfood(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePetfoodInput!
+  ): UpdatePetfoodPayload
+
+  """Updates a single `Petfood` using a unique key and a patch."""
+  updatePetfoodById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePetfoodByIdInput!
+  ): UpdatePetfoodPayload
+
+  """Deletes a single `Petfood` using its globally unique id."""
+  deletePetfood(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePetfoodInput!
+  ): DeletePetfoodPayload
+
+  """Deletes a single `Petfood` using a unique key."""
+  deletePetfoodById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePetfoodByIdInput!
+  ): DeletePetfoodPayload
+}
+
+"""The output of our create `Petfood` mutation."""
+type CreatePetfoodPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Petfood` that was created by this mutation."""
+  petfood: Petfood
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Petfood`. May be used by Relay 1."""
+  petfoodEdge(
+    """The method to use when ordering `Petfood`."""
+    orderBy: [PetfoodsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PetfoodsEdge
+}
+
+"""All input for the create `Petfood` mutation."""
+input CreatePetfoodInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Petfood` to be created by this mutation."""
+  petfood: PetfoodInput!
+}
+
+"""An input for mutations affecting `Petfood`"""
+input PetfoodInput {
+  id: UUID
+  name: String!
+  amount: Int!
+}
+
+"""The output of our update `Petfood` mutation."""
+type UpdatePetfoodPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Petfood` that was updated by this mutation."""
+  petfood: Petfood
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Petfood`. May be used by Relay 1."""
+  petfoodEdge(
+    """The method to use when ordering `Petfood`."""
+    orderBy: [PetfoodsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PetfoodsEdge
+}
+
+"""All input for the `updatePetfood` mutation."""
+input UpdatePetfoodInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Petfood` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Petfood` being updated.
+  """
+  petfoodPatch: PetfoodPatch!
+}
+
+"""
+Represents an update to a `Petfood`. Fields that are set will be updated.
+"""
+input PetfoodPatch {
+  id: UUID
+  name: String
+  amount: Int
+}
+
+"""All input for the `updatePetfoodById` mutation."""
+input UpdatePetfoodByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Petfood` being updated.
+  """
+  petfoodPatch: PetfoodPatch!
+  id: UUID!
+}
+
+"""The output of our delete `Petfood` mutation."""
+type DeletePetfoodPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Petfood` that was deleted by this mutation."""
+  petfood: Petfood
+  deletedPetfoodId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Petfood`. May be used by Relay 1."""
+  petfoodEdge(
+    """The method to use when ordering `Petfood`."""
+    orderBy: [PetfoodsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PetfoodsEdge
+}
+
+"""All input for the `deletePetfood` mutation."""
+input DeletePetfoodInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Petfood` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deletePetfoodById` mutation."""
+input DeletePetfoodByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
